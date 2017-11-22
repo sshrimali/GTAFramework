@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="GTAFramework" default="build.modules">
+  
+  
+<!--  <property file="smframework.properties"/> -->
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*.yarb/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.swc"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.ear"/>
+    <include name="*.egg"/>
+    <include name="*.ane"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.lib.classpath">
+    <fileset dir="${basedir}/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module AutomationFramework -->
+  
+  <dirname property="module.automationframework.basedir" file="${ant.file}"/>
+
+
+  <property name="compiler.args.automationframework" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  <property name="runId" value="default"/>
+
+  <property name="automationframework.output.dir" value="${module.automationframework.basedir}/out/production/AutomationFramework"/>
+  <property name="reportdir" location="reports" />
+  <property name="junitXMLReport" value="${reportdir}/TESTS-TestSuites.xml" />
+  <property name="logdir" location="logs" />
+  <property name="automationframework.testoutput.dir" value="${module.automationframework.basedir}/out/test/AutomationFramework"/>
+  
+  <path id="automationframework.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="automationframework.module.production.classpath">
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="automationframework.runtime.production.module.classpath">
+    <pathelement location="${automationframework.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+
+  <path id="automationframework.module.classpath">
+    <pathelement location="${automationframework.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="automationframework.runtime.module.classpath">
+    <pathelement location="${automationframework.testoutput.dir}"/>
+    <pathelement location="${automationframework.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.automationframework">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.automationframework">
+    <patternset refid="excluded.from.module.automationframework"/>
+  </patternset>
+  
+  <path id="automationframework.module.sourcepath">
+    <dirset dir="${module.automationframework.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.automationframework" depends="compile.module.automationframework.production,compile.module.automationframework.tests" description="Compile module AutomationFramework"/>
+  
+  <target name="compile.module.automationframework.production" description="Compile module AutomationFramework; production classes">
+    <mkdir dir="${automationframework.output.dir}"/>
+    <mkdir dir="${automationframework.output.dir}/testng"/>
+    <javac destdir="${automationframework.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.automationframework}"/>
+      <bootclasspath refid="automationframework.module.bootclasspath"/>
+      <classpath refid="automationframework.module.production.classpath"/>
+      <src refid="automationframework.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.automationframework"/>
+    </javac>
+    
+    <copy todir="${automationframework.output.dir}">
+      <fileset dir="${module.automationframework.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  <!-- Define <testng> task -->
+  <taskdef name="testng" classname="org.testng.TestNGAntTask">
+    <classpath>
+      <pathelement location="lib/testng-6.9.12.jar"/>
+    </classpath>
+  </taskdef>
+
+  <target name="compile.module.automationframework.tests" depends="compile.module.automationframework.production" description="compile module AutomationFramework; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.automationframework" description="cleanup module">
+    <delete dir="${automationframework.output.dir}"/>
+    <delete dir="${automationframework.testoutput.dir}"/>
+    <delete dir="${reportdir}"/>
+    <delete dir="${logdir}"/>
+    <mkdir dir="${reportdir}" />
+    <mkdir dir="${logdir}" />
+    <mkdir dir="${reportdir}/html/screenshots" />
+  </target>
+  
+
+  
+  <target name="clean" depends="clean.module.automationframework" description="cleanup all"/>
+
+  <target name="build" depends="clean, compile.module.automationframework" description="build all modules"/>
+
+  <target name="runAllTests" depends="build" description="build all">
+    <!-- TODO : Use TestNG reporter to be able to use report info block efficiently-->
+   <!--<testng outputdir="${reportdir}" classpathref="automationframework.module.classpath" useDefaultListeners="true">-->
+   <testng outputdir="${reportdir}" classpathref="automationframework.module.classpath" useDefaultListeners="false">
+    <xmlfileset dir="." includes="testng.xml"/>
+  </testng>
+    <antcall target="junit-report"/>
+    <antcall target="convertVideos"/>
+    <antcall target="updateTestRail"/>
+  </target>
+
+  <target name="runAllQuick" depends="build" description="build all">
+      <testng outputdir="${reportdir}" classpathref="automationframework.module.classpath" useDefaultListeners="false">
+      <xmlfileset dir="." includes="testng.xml"/>
+    </testng>
+    <antcall target="junit-report"/>
+    <!--<antcall target="convertVideos"/>-->
+    <!--<antcall target="updateTestRail"/>-->
+  </target>
+
+  <!-- Ant target to generate html report -->
+  <target name="junit-report">
+    <junitreport todir="${reportdir}">
+      <fileset dir="${reportdir}/junitreports">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report todir="${reportdir}/html"
+              styledir="etc"
+              format="noframes">
+        <param name="key1" expression="value1"/>
+        <param name="key2" expression="value2"/>
+      </report>
+    </junitreport>
+    <move file="${reportdir}/html/junit-noframes.html" tofile="${reportdir}/html/index.html"/>
+    <copyfile src="etc/diff.html" dest="${reportdir}/html/diff.html"/>
+  </target>
+  <target name="convertVideos">
+    <exec executable="./scripts/converter.sh">
+    </exec>
+  </target>
+  <target name="updateTestRail" depends="compile.module.automationframework">
+    <java classname="utils.framework.testrail.TestRailResultUpdate">
+      <arg value="${runId}"/>
+      <classpath>
+        <path refid="automationframework.module.classpath"/>
+      </classpath>
+    </java>
+
+  </target>
+
+</project>

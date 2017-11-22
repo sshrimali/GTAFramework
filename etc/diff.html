@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<style type="text/css">
+  .left{style="text-align:center;"}
+</style>
+
+<script type="text/javascript">
+window.onload = function what(){
+    var test_name=window.location.href.slice(window.location.href.indexOf('?') + 1).split('&')[0].split('=')[1];
+    console.log(test_name);
+    var img_actual='<img src=\"screenshots/' + test_name + '_actual.png\" alt=\"No Image available for this test\" height="550" width="1000" hspace="20" vspace="20">';
+    document.getElementById("img_actual").innerHTML = img_actual.toString();
+
+    var img_expected='<img src=\"screenshots/' + test_name + '_expected.png\" alt=\"No Image available for this test\" align="middle" hspace="20" vspace="20" >';
+    document.getElementById("img_expected").innerHTML = img_expected.toString();
+
+    document.getElementById("heading").innerHTML = "Side by side image diff for actual vs Expected for testcase ID : " + test_name;
+
+    }
+</script>
+<body>
+
+<h2 id="heading"></h2>
+<table border="2">
+    <th>Expected Sub Image</th><th>Actual Super Image</th>
+    <tr>
+        <td>
+<div id="img_expected" class="left"> <a>sourab no here</a></div>
+        </td>
+    <td>
+        <div id="img_actual" class="left"> <a>sourab no here</a></div>
+</td>
+    </tr>
+    </table>
+</br>
+</body>
+
+</html>

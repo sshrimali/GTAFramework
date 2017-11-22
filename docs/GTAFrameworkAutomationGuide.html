@@ -1,0 +1,1014 @@
+<HTML>
+<HEAD>
+	<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+	<title>GTA Framework Guide</title>
+
+	<script>
+	function htmlTableOfContentsClass (documentRef) {
+    var documentRef = documentRef || document;
+    var toc = documentRef.getElementById('toc');
+    var headings = [].slice.call(documentRef.body.querySelectorAll('h2.queryselect, h3.queryselect, h4.queryselect, h5.queryselect, h6.queryselect'));
+    headings.forEach(function (heading, index) {
+        var anchor = documentRef.createElement('a');
+        anchor.setAttribute('name', 'id_anchor' + index);
+        anchor.setAttribute('id', 'id_anchor' + index);
+
+        var link = documentRef.createElement('a');
+        link.setAttribute('href', '#id_anchor' + index);
+        link.textContent = heading.textContent;
+
+        var div = documentRef.createElement('div');
+        div.setAttribute('class', heading.tagName.toLowerCase());
+
+        div.appendChild(link);
+        toc.appendChild(div);
+        heading.parentNode.insertBefore(anchor, heading);
+    });
+}
+
+try {
+     module.exports = htmlTableOfContents;
+} catch (e) {
+    // module.exports is not defined
+}
+
+</script>
+
+	<style type="text/css">
+#toc .h1 {
+    text-indent: .25in;
+            font-size: 15px;
+
+
+}
+#toc .h2 {
+    text-indent: .5in;
+            font-size: 17px;
+            padding-top: 8px;"
+
+
+}
+a {
+           text-decoration: none;
+}
+#toc .h3 {
+    text-indent: .75in;
+            font-size: 15px;
+            padding-top: 2px;"
+
+}
+#toc .h4 {
+    text-indent: 1in;
+            font-size: 15px;
+
+}
+#toc .h5 {
+    text-indent: 1.25in;
+}
+#toc .h6 {
+    text-indent: 1.5in;
+}
+body {
+    font: normal 68% verdana, arial, helvetica;
+    font-size: 15px;
+    color: #000000;
+}
+table tr td,
+table tr th {
+    font-size: 68%;
+}
+table.details tr th {
+    font-weight: bold;
+    text-align: left;
+    background: #a6caf0;
+}
+table.details tr td {
+    background: #eeeee0;
+}
+p {
+    font: normal 68% verdana, arial, helvetica;
+    line-height: 1.5em;
+    margin-top: 0.5em;
+    margin-bottom: 1.0em;
+    font-size: 15px;
+    max-width: 740px;
+}
+
+
+h1 {
+    margin: 0px 0px 5px;
+    font: bold 165% verdana, arial, helvetica;
+    color: #F07D00;
+}
+h2 {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font: bold 145% verdana, arial, helvetica;
+    color: #F07D00;
+}
+h3 {
+    margin-bottom: 0.5em;
+    font: bold 105% verdana, arial, helvetica;
+        color: #F07D00;
+}
+h4 {
+    margin-bottom: 0.5em;
+    font: bold 90% verdana, arial, helvetica;
+            color: #484848;
+            text-decoration: underline;
+
+}
+h5 {
+    margin-bottom: 0.5em;
+    font: bold 100% verdana, arial, helvetica
+}
+h6 {
+    margin-bottom: 0.5em;
+    font: bold 100% verdana, arial, helvetica
+}
+.Properties {
+    text-align: right;
+}
+.code {
+background-color: #eeeee0;
+font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+font-family: 'Source Code Pro';
+    background: #eeeee0;
+    font-family: 'Source Code Pro';
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 16px;
+    color: #484848;
+    white-space: pre;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+	</style>
+
+</HEAD>
+<body onload="htmlTableOfContentsClass();">
+<br/>
+<br/>
+<h1 style="text-align: center;">GTA Framework Guide</h1>
+<br/>
+<!--<hr size="1" width="95%" align="left">-->
+<!-- <img src="pic_mountain.jpg" alt="Mountain View" style="width:304px;height:228px;"> -->
+<h1>Framework Architecture</h1>
+<hr size="1" width="95%" align="left">
+<br/>
+<br/>
+<br/>
+<img src="GTAFrameworkArchitecture.png" alt="Design" align="center" style="width:85%;height:80%;padding-left: 30px;">
+<br/>
+<br/>
+<br/>
+<h1>Guide to Writing tests</h1>
+<hr size="1" width="95%" align="left">
+
+<h3>Test Suites</h3>
+<p> Tests are organized in following structure of packages & classes</p>
+<h4>Test Suite Class </h4>
+<div class="code">src/&lt;FeatureName&gt;/&lt;/TestSuiteName&gt;.java </div>
+
+<h4>Test Suite Sample </h4>
+
+<div class="code">src/testsuites/Authentication/SignInTest.java
+</div>
+<h3>Test Case</h3>
+<p>Testcases are written as simple java methods using '@Test' annotation of testNG. </p>
+<h4>Testcase Syntax: </h4>
+<div class="code">@Test
+public void test-description_testcaseId() throws Exception
+{
+    &lt;UtilityHelper&gt; object = new &lt;UtilityHelper&gt; (dataProperty,"testcaseID");
+    object.method();
+}
+</div>
+<h4>Testcase Sample: </h4>
+<div class="code">@Test
+public void signUpFrontend_1145() throws Exception
+{
+    AuthenticationHelper helper = new AuthenticationHelper(dataProperty,"1145");
+    helper.signup();
+}    </div>
+<h3>Test Data</h3>
+<p>Test data is equivalent of property files where key value pairs are stored.</p>
+<h4>Test Data Location: </h4>
+<div class="code">Location:
+    &lt;testdata&gt;/&lt;functionality&gt/&lt;/featurename.txt&gt;
+Sample:
+    testdata/authentication/signup.txt</div>
+
+<h4>Test Data Syntax: </h4>
+    <div class="code">&lt;testcaseId&gt;_parameter1=value1
+&lt;testcaseId&gt;_parameter1=value1
+....</div>
+
+<h4>Test Data Sample: </h4>
+<div class
+1145_password=test
+....
+</div>
+<br/>
+<br/>
+<a name="top"></a>
+
+<!--<hr size="1" width="95%" align="left">-->
+<br/>
+
+<h1 class="queryselect">Utilities</h1>
+<hr size="1" width="95%" align="left">
+
+<br/>
+<p>Here is a list of utilities, their methods and details of using with test data</p>
+<div id="toc"> </div>
+            <div class="Properties" style="width:95%;"> <a href="#top">Back to top</a> </div>
+            <hr size="1" width="95%" align="left">
+            <h2 class="queryselect">1. AdobeHelper</h2>
+             <p> This class contains all the Adobe related methods </p>
+<h4>Initialization</h4>
+<div class="code">AdobeHelper helper = new AdobeHelper(dataProperty,"testcaseID");
+</div>
+<h4>Sample</h4>
+<div class="code">AdobeHelper helper = new AdobeHelper(AdobeHelperDataProperty,8363);
+</div>
+        <h3 class="queryselect">1.1 getDigitalDataObject</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to get Digital Data Object </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">AdobeHelper helper = new AdobeHelper(dataProperty,"testcaseID");
+helper.getDigitalDataObject();
+</div>
+            <div class="Properties" style="width:95%;"> <a href="#top">Back to top</a> </div>
+            <hr size="1" width="95%" align="left">
+            <h2 class="queryselect">2. AuthenticationHelper</h2>
+             <p> This class contains all the Authentication related methods </p>
+<h4>Initialization</h4>
+<div class="code">AuthenticationHelper helper = new AuthenticationHelper(dataProperty,"testcaseID");
+</div>
+<h4>Sample</h4>
+<div class="code">AuthenticationHelper helper = new AuthenticationHelper(AuthenticationHelperDataProperty,1989);
+</div>
+        <h3 class="queryselect">2.1 isSignedIn</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to to verify if Signed In </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">AuthenticationHelper helper = new AuthenticationHelper(dataProperty,"testcaseID");
+helper.isSignedIn();
+</div>
+        <h3 class="queryselect">2.2 isSignedOut</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to to verify if Signed Out </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">AuthenticationHelper helper = new AuthenticationHelper(dataProperty,"testcaseID");
+helper.isSignedOut();
+</div>
+        <h3 class="queryselect">2.3 signUpUI</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to sign Up frontend </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">AuthenticationHelper helper = new AuthenticationHelper(dataProperty,"testcaseID");
+helper.signUpUI();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">exitAfterPassword
+password
+universityName
+userName
+verifyPasswordImage
+verifyUserTypeAvailable
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">4294_exitAfterPassword=true
+4294_password=1
+4294_universityName=Lesley University
+4294_verifyPasswordImage=6charsPresent.png
+4294_verifyUserTypeAvailable=StudentParentUser.png
+</div>
+        <h3 class="queryselect">2.4 signIn</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to sign In </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">AuthenticationHelper helper = new AuthenticationHelper(dataProperty,"testcaseID");
+helper.signIn();
+</div>
+        <h3 class="queryselect">2.5 signOut</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to sign Out </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">AuthenticationHelper helper = new AuthenticationHelper(dataProperty,"testcaseID");
+helper.signOut();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">password
+userName
+verifyPasswordImage
+verifyUserTypeAvailable
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">4480_password=1
+4480_verifyPasswordImage=6charsPresent.png
+4480_verifyUserTypeAvailable=StudentParentUser.png
+</div>
+            <div class="Properties" style="width:95%;"> <a href="#top">Back to top</a> </div>
+            <hr size="1" width="95%" align="left">
+            <h2 class="queryselect">3. BuyBackHelper</h2>
+             <p> This class contains all the Buy Back related methods </p>
+<h4>Initialization</h4>
+<div class="code">BuyBackHelper helper = new BuyBackHelper(dataProperty,"testcaseID");
+</div>
+<h4>Sample</h4>
+<div class="code">BuyBackHelper helper = new BuyBackHelper(BuyBackHelperDataProperty,9185);
+</div>
+        <h3 class="queryselect">3.1 sellBooks</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to sell Books </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">BuyBackHelper helper = new BuyBackHelper(dataProperty,"testcaseID");
+helper.sellBooks();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">item
+shippingAddressCity
+shippingAddressFName
+shippingAddressLName
+shippingAddressLine1
+shippingAddressLine2
+shippingAddressPhone
+shippingAddressState
+shippingAddressZip
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">6942_item=social
+6942_shippingAddressCity=Santa clara
+6942_shippingAddressFName=defaultFName
+6942_shippingAddressLName=defaultLName
+6942_shippingAddressLine1=3990
+6942_shippingAddressLine2=Freedom Cir
+6942_shippingAddressPhone=4088555600
+6942_shippingAddressState=CA
+6942_shippingAddressZip=95054
+</div>
+            <div class="Properties" style="width:95%;"> <a href="#top">Back to top</a> </div>
+            <hr size="1" width="95%" align="left">
+            <h2 class="queryselect">4. CartHelper</h2>
+             <p> This class contains all the Cart related methods </p>
+<h4>Initialization</h4>
+<div class="code">CartHelper helper = new CartHelper(dataProperty,"testcaseID");
+</div>
+<h4>Sample</h4>
+<div class="code">CartHelper helper = new CartHelper(CartHelperDataProperty,5862);
+</div>
+        <h3 class="queryselect">4.1 verifyCart</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Cart </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">CartHelper helper = new CartHelper(dataProperty,"testcaseID");
+helper.verifyCart();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">cartImageIcon
+productType
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">4802_cartImageIcon=cartIconSCDown_1.png
+4802_productType=eTextbook
+</div>
+            <div class="Properties" style="width:95%;"> <a href="#top">Back to top</a> </div>
+            <hr size="1" width="95%" align="left">
+            <h2 class="queryselect">5. FooterHelper</h2>
+             <p> This class contains all the Footer related methods </p>
+<h4>Initialization</h4>
+<div class="code">FooterHelper helper = new FooterHelper(dataProperty,"testcaseID");
+</div>
+<h4>Sample</h4>
+<div class="code">FooterHelper helper = new FooterHelper(FooterHelperDataProperty,3466);
+</div>
+        <h3 class="queryselect">5.1 verifyFooter</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Footer </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">FooterHelper helper = new FooterHelper(dataProperty,"testcaseID");
+helper.verifyFooter();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">copyRightText
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">3261_copyRightText=2003-_CURRENT_YEAR_  Inc. All rights reserved.
+</div>
+            <div class="Properties" style="width:95%;"> <a href="#top">Back to top</a> </div>
+            <hr size="1" width="95%" align="left">
+            <h2 class="queryselect">6. HomePageUIHelper</h2>
+             <p> This class contains all the Home Page frontend related methods </p>
+<h4>Initialization</h4>
+<div class="code">HomePageUIHelper helper = new HomePageUIHelper(dataProperty,"testcaseID");
+</div>
+<h4>Sample</h4>
+<div class="code">HomePageUIHelper helper = new HomePageUIHelper(HomePageUIHelperDataProperty,7015);
+</div>
+        <h3 class="queryselect">6.1 openHomePage</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to open Home Page </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">HomePageUIHelper helper = new HomePageUIHelper(dataProperty,"testcaseID");
+helper.openHomePage();
+</div>
+        <h3 class="queryselect">6.2 verifySignedOutHomePageLookAndFeel</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Signed Out Home Page Look And Feel </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">HomePageUIHelper helper = new HomePageUIHelper(dataProperty,"testcaseID");
+helper.verifySignedOutHomePageLookAndFeel();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">MenuHomePageScrolledDown
+MenuHomePageScrolledUp
+HPGurillaGlass
+LogoHomePage
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">3745_MenuHomePageScrolledDown=MenuHomePageScrolledDown.png
+3745_MenuHomePageScrolledUp=MenuHomePageScrolledUp.png
+3745_HPGurillaGlass=HPGurillaGlass.png
+3745_LogoHomePage=LogoHomePage.png
+</div>
+        <h3 class="queryselect">6.3 verifyImageCount</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Image Count </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">HomePageUIHelper helper = new HomePageUIHelper(dataProperty,"testcaseID");
+helper.verifyImageCount();
+</div>
+        <h3 class="queryselect">6.4 verifyHomePageLogo</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Home Page Logo </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">HomePageUIHelper helper = new HomePageUIHelper(dataProperty,"testcaseID");
+helper.verifyHomePageLogo();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">LogoHomePage
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">8353_LogoHomePage=LogoHomePage.png
+</div>
+        <h3 class="queryselect">6.5 verifyHomePageDropDownMenu</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Home Page Drop Down Menu </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">HomePageUIHelper helper = new HomePageUIHelper(dataProperty,"testcaseID");
+helper.verifyHomePageDropDownMenu();
+</div>
+        <h3 class="queryselect">6.6 verifyResolution</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Resolution </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">HomePageUIHelper helper = new HomePageUIHelper(dataProperty,"testcaseID");
+helper.verifyResolution();
+</div>
+        <h3 class="queryselect">6.7 verifyHamburgerMenu</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Hamburger Menu </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">HomePageUIHelper helper = new HomePageUIHelper(dataProperty,"testcaseID");
+helper.verifyHamburgerMenu();
+</div>
+            <div class="Properties" style="width:95%;"> <a href="#top">Back to top</a> </div>
+            <hr size="1" width="95%" align="left">
+            <h2 class="queryselect">7. MobileHomePageUIHelper</h2>
+             <p> This class contains all the Mobile Home Page frontend related methods </p>
+<h4>Initialization</h4>
+<div class="code">MobileHomePageUIHelper helper = new MobileHomePageUIHelper(dataProperty,"testcaseID");
+</div>
+<h4>Sample</h4>
+<div class="code">MobileHomePageUIHelper helper = new MobileHomePageUIHelper(MobileHomePageUIHelperDataProperty,2135);
+</div>
+        <h3 class="queryselect">7.1 verifyImageCount</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Image Count </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">MobileHomePageUIHelper helper = new MobileHomePageUIHelper(dataProperty,"testcaseID");
+helper.verifyImageCount();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">imageFile
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">9866_imageFile=mobileHPMenu.png
+</div>
+        <h3 class="queryselect">7.2 verifyImage</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Image </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">MobileHomePageUIHelper helper = new MobileHomePageUIHelper(dataProperty,"testcaseID");
+helper.verifyImage();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">imageFile
+landingPage
+menuOpen
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">7581_imageFile=mobileHPMenu.png
+7581_landingPage=HOMEPAGE
+7581_menuOpen=true
+</div>
+            <div class="Properties" style="width:95%;"> <a href="#top">Back to top</a> </div>
+            <hr size="1" width="95%" align="left">
+            <h2 class="queryselect">8. MyAccountsHelper</h2>
+             <p> This class contains all the My Accounts related methods </p>
+<h4>Initialization</h4>
+<div class="code">MyAccountsHelper helper = new MyAccountsHelper(dataProperty,"testcaseID");
+</div>
+<h4>Sample</h4>
+<div class="code">MyAccountsHelper helper = new MyAccountsHelper(MyAccountsHelperDataProperty,7837);
+</div>
+        <h3 class="queryselect">8.1 searchCurrentPage</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to search Current Page </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">MyAccountsHelper helper = new MyAccountsHelper(dataProperty,"testcaseID");
+helper.searchCurrentPage();
+</div>
+        <h3 class="queryselect">8.2 clickFirstResult</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to click First Result </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">MyAccountsHelper helper = new MyAccountsHelper(dataProperty,"testcaseID");
+helper.clickFirstResult();
+</div>
+        <h3 class="queryselect">8.3 verifySERPAdsPlacement</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify SE RP Ads Placement </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">MyAccountsHelper helper = new MyAccountsHelper(dataProperty,"testcaseID");
+helper.verifySERPAdsPlacement();
+</div>
+        <h3 class="queryselect">8.4 changePassword</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to change Password </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">MyAccountsHelper helper = new MyAccountsHelper(dataProperty,"testcaseID");
+helper.changePassword();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">newPassword
+oldPassword
+passwordChangeImage
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">10110_newPassword=test
+10110_oldPassword=1
+10110_passwordChangeImage=NewInvalidChangePassword.png
+</div>
+        <h3 class="queryselect">8.5 subscribeToStudy</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to subscribe To  Study </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">MyAccountsHelper helper = new MyAccountsHelper(dataProperty,"testcaseID");
+helper.subscribeToStudy();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">csNonMemberMyAccountsLandingImage
+imageComparisionFactor
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">2803_csNonMemberMyAccountsLandingImage=csNonMemberMyAccountsLandingImage.png
+2803_imageComparisionFactor=0.50
+</div>
+        <h3 class="queryselect">8.6 subscribeToTutors</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to subscribe To Tutors </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">MyAccountsHelper helper = new MyAccountsHelper(dataProperty,"testcaseID");
+helper.subscribeToTutors();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">imageComparisionFactor
+tutorsNonMemberMyAccountsLandingImage
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">4513_imageComparisionFactor=0.50
+4513_tutorsNonMemberMyAccountsLandingImage=tutorsNonMemberMyAccountsLandingImage.png
+</div>
+        <h3 class="queryselect">8.7 verifyBooksIveSold</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Books Ive Sold </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">MyAccountsHelper helper = new MyAccountsHelper(dataProperty,"testcaseID");
+helper.verifyBooksIveSold();
+</div>
+        <h3 class="queryselect">8.8 updateNotificationPreferance</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to update Notification Preferance </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">MyAccountsHelper helper = new MyAccountsHelper(dataProperty,"testcaseID");
+helper.updateNotificationPreferance();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">updatePref
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">10569_updatePref=unsubscribe
+</div>
+            <div class="Properties" style="width:95%;"> <a href="#top">Back to top</a> </div>
+            <hr size="1" width="95%" align="left">
+            <h2 class="queryselect">9. MyOrdersHelper</h2>
+             <p> This class contains all the My Orders related methods </p>
+<h4>Initialization</h4>
+<div class="code">MyOrdersHelper helper = new MyOrdersHelper(dataProperty,"testcaseID");
+</div>
+<h4>Sample</h4>
+<div class="code">MyOrdersHelper helper = new MyOrdersHelper(MyOrdersHelperDataProperty,5531);
+</div>
+        <h3 class="queryselect">9.1 verifyMyOrder</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify My Order </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">MyOrdersHelper helper = new MyOrdersHelper(dataProperty,"testcaseID");
+helper.verifyMyOrder();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">orderKey
+verifyOrderExtension
+verifyPrintReciept
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">1424_orderKey=defaultTestdata_orderKey
+1424_verifyOrderExtension=true
+1424_verifyPrintReciept=true
+</div>
+            <div class="Properties" style="width:95%;"> <a href="#top">Back to top</a> </div>
+            <hr size="1" width="95%" align="left">
+            <h2 class="queryselect">10. NavigationHelper</h2>
+             <p> This class contains all the Navigation related methods </p>
+<h4>Initialization</h4>
+<div class="code">NavigationHelper helper = new NavigationHelper(dataProperty,"testcaseID");
+</div>
+<h4>Sample</h4>
+<div class="code">NavigationHelper helper = new NavigationHelper(NavigationHelperDataProperty,9640);
+</div>
+        <h3 class="queryselect">10.1 verifyMenuDropDown</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Menu Drop Down </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">NavigationHelper helper = new NavigationHelper(dataProperty,"testcaseID");
+helper.verifyMenuDropDown();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">menuDropDownImage
+menuItem
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">8705_menuDropDownImage=booksMenuDropDownMenu.png
+8705_menuItem=Books
+</div>
+        <h3 class="queryselect">10.2 verifyNavigationFlow</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Navigation Flow </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">NavigationHelper helper = new NavigationHelper(dataProperty,"testcaseID");
+helper.verifyNavigationFlow();
+</div>
+            <div class="Properties" style="width:95%;"> <a href="#top">Back to top</a> </div>
+            <hr size="1" width="95%" align="left">
+            <h2 class="queryselect">11. OrdersHelper</h2>
+             <p> This class contains all the Orders related methods </p>
+<h4>Initialization</h4>
+<div class="code">OrdersHelper helper = new OrdersHelper(dataProperty,"testcaseID");
+</div>
+<h4>Sample</h4>
+<div class="code">OrdersHelper helper = new OrdersHelper(OrdersHelperDataProperty,6688);
+</div>
+        <h3 class="queryselect">11.1 placeOrder</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to place Order </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">OrdersHelper helper = new OrdersHelper(dataProperty,"testcaseID");
+helper.placeOrder();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">paymentInfoCVV
+paymentInfoCardNumber
+paymentInfoMonthExpiry
+paymentInfoName
+paymentInfoYearExpiry
+shippingAddressCity
+shippingAddressFName
+shippingAddressLName
+shippingAddressLine1
+shippingAddressLine2
+shippingAddressPhone
+shippingAddressState
+shippingAddressZip
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">1703_paymentInfoCVV=223
+1703_paymentInfoCardNumber=4111111111111111
+1703_paymentInfoMonthExpiry=3
+1703_paymentInfoName=Growth gta
+1703_paymentInfoYearExpiry=2025
+1703_shippingAddressCity=Santa clara
+1703_shippingAddressFName=defaultFName
+1703_shippingAddressLName=defaultLName
+1703_shippingAddressLine1=3990
+1703_shippingAddressLine2=Freedom Cir
+1703_shippingAddressPhone=4088555600
+1703_shippingAddressState=CA
+1703_shippingAddressZip=95054
+</div>
+            <div class="Properties" style="width:95%;"> <a href="#top">Back to top</a> </div>
+            <hr size="1" width="95%" align="left">
+            <h2 class="queryselect">12. PDPUIHelper</h2>
+             <p> This class contains all the P DP frontend related methods </p>
+<h4>Initialization</h4>
+<div class="code">PDPUIHelper helper = new PDPUIHelper(dataProperty,"testcaseID");
+</div>
+<h4>Sample</h4>
+<div class="code">PDPUIHelper helper = new PDPUIHelper(PDPUIHelperDataProperty,6632);
+</div>
+        <h3 class="queryselect">12.1 navitageToPDP</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to navitage To PD P </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">PDPUIHelper helper = new PDPUIHelper(dataProperty,"testcaseID");
+helper.navitageToPDP();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">searchFieldClosed
+searchFieldClosedImage
+searchFieldExpandImage
+searchString
+verifyOnPdp
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">4770_searchFieldClosed=true
+4770_searchFieldClosedImage=MenuHomePageScrolledDown.png
+4770_searchFieldExpandImage=searchFieldExpandImage.png
+4770_searchString=9780133011203
+4770_verifyOnPdp=true
+</div>
+        <h3 class="queryselect">12.2 verifyPDP</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify PD P </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">PDPUIHelper helper = new PDPUIHelper(dataProperty,"testcaseID");
+helper.verifyPDP();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">coverImage
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">6785_coverImage=coverImage_5744.png
+</div>
+        <h3 class="queryselect">12.3 comparePDP</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to compare PD P </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">PDPUIHelper helper = new PDPUIHelper(dataProperty,"testcaseID");
+helper.comparePDP();
+</div>
+        <h3 class="queryselect">12.4 selectShippingState</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to select Shipping State </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">PDPUIHelper helper = new PDPUIHelper(dataProperty,"testcaseID");
+helper.selectShippingState();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">pricingState
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">
+</div>
+        <h3 class="queryselect">12.5 addToCart</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to add To Cart </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">PDPUIHelper helper = new PDPUIHelper(dataProperty,"testcaseID");
+helper.addToCart();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">item
+pricingState
+productType
+searchFieldClosed
+searchFieldClosedImage
+searchFieldExpandImage
+searchString
+verifyOnPdp
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">10842_item=social
+10842_productType=eTextbook
+10842_searchFieldClosed=true
+10842_searchFieldClosedImage=MenuHomePageScrolledDown.png
+10842_searchFieldExpandImage=searchFieldExpandImage.png
+10842_searchString=9780133011203
+10842_verifyOnPdp=true
+</div>
+        <h3 class="queryselect">12.6 verifyFamilyURL</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Family UR L </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">PDPUIHelper helper = new PDPUIHelper(dataProperty,"testcaseID");
+helper.verifyFamilyURL();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">searchString
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">10265_searchString=9780133011203
+</div>
+            <div class="Properties" style="width:95%;"> <a href="#top">Back to top</a> </div>
+            <hr size="1" width="95%" align="left">
+            <h2 class="queryselect">13. SearchResultsUIHelper</h2>
+             <p> This class contains all the Search Results frontend related methods </p>
+<h4>Initialization</h4>
+<div class="code">SearchResultsUIHelper helper = new SearchResultsUIHelper(dataProperty,"testcaseID");
+</div>
+<h4>Sample</h4>
+<div class="code">SearchResultsUIHelper helper = new SearchResultsUIHelper(SearchResultsUIHelperDataProperty,9157);
+</div>
+        <h3 class="queryselect">13.1 searchGurillaGlass</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to search Gurilla Glass </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">SearchResultsUIHelper helper = new SearchResultsUIHelper(dataProperty,"testcaseID");
+helper.searchGurillaGlass();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">imageFile
+landingPage
+searchString
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">4399_imageFile=mobileHPMenu.png
+4399_landingPage=HOMEPAGE
+4399_searchString=9780133011203
+</div>
+        <h3 class="queryselect">13.2 searchCurrentPage</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to search Current Page </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">SearchResultsUIHelper helper = new SearchResultsUIHelper(dataProperty,"testcaseID");
+helper.searchCurrentPage();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">searchFieldClosed
+searchFieldClosedImage
+searchFieldExpandImage
+searchString
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">10892_searchFieldClosed=true
+10892_searchFieldClosedImage=MenuHomePageScrolledDown.png
+10892_searchFieldExpandImage=searchFieldExpandImage.png
+10892_searchString=9780133011203
+</div>
+        <h3 class="queryselect">13.3 searchCurrentPage</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to search Current Page </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">SearchResultsUIHelper helper = new SearchResultsUIHelper(dataProperty,"testcaseID");
+helper.searchCurrentPage();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">searchFieldClosed
+searchFieldClosedImage
+searchFieldExpandImage
+searchString
+verifyOnPdp
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">9946_searchFieldClosed=true
+9946_searchFieldClosedImage=MenuHomePageScrolledDown.png
+9946_searchFieldExpandImage=searchFieldExpandImage.png
+9946_searchString=9780133011203
+9946_verifyOnPdp=true
+</div>
+        <h3 class="queryselect">13.4 clickFirstResult</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to click First Result </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">SearchResultsUIHelper helper = new SearchResultsUIHelper(dataProperty,"testcaseID");
+helper.clickFirstResult();
+</div>
+        <h3 class="queryselect">13.5 verifySearchResults</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Search Results </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">SearchResultsUIHelper helper = new SearchResultsUIHelper(dataProperty,"testcaseID");
+helper.verifySearchResults();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">searchString
+verifyNavigation
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">6686_searchString=9780133011203
+6686_verifyNavigation=Connect with an online tutor in under 5 minutes
+</div>
+        <h3 class="queryselect">13.6 serpSearch</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to serp Search </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">SearchResultsUIHelper helper = new SearchResultsUIHelper(dataProperty,"testcaseID");
+helper.serpSearch();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">searchFieldClosed
+searchFieldClosedImage
+searchFieldExpandImage
+searchString
+verifyOnPdp
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">8362_searchFieldClosed=true
+8362_searchFieldClosedImage=MenuHomePageScrolledDown.png
+8362_searchFieldExpandImage=searchFieldExpandImage.png
+8362_searchString=9780133011203
+8362_verifyOnPdp=true
+</div>
+        <h3 class="queryselect">13.7 verifySERPAdsPlacement</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify SE RP Ads Placement </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">SearchResultsUIHelper helper = new SearchResultsUIHelper(dataProperty,"testcaseID");
+helper.verifySERPAdsPlacement();
+</div>
+        <h3 class="queryselect">13.8 verifyPagination</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to verify Pagination </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">SearchResultsUIHelper helper = new SearchResultsUIHelper(dataProperty,"testcaseID");
+helper.verifyPagination();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">imageFile
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">5524_imageFile=mobileHPMenu.png
+</div>
+        <h3 class="queryselect">13.9 switchSerpVertical</h3>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<p> This method is used to switch Serp Vertical </p>
+<h4>Usage:</h4>
+<!-- whatever other content, probably some paragraphs and stuff. -->
+<div class="code">SearchResultsUIHelper helper = new SearchResultsUIHelper(dataProperty,"testcaseID");
+helper.switchSerpVertical();
+</div>
+<h4>Test Data Attribs</h4>
+<div class="code">searchVertical
+</div>
+<h4>Sample Test Data</h4>
+<div class="code">9848_searchVertical=tutors
+</div>

@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TestAll" configfailurepolicy="continue" >
+	<listeners>
+		<!--<listener class-name="org.testng.reporters.JUnitXMLReporter"/>-->
+		<listener class-name="org.testng.reporters.JUnitReportReporter"/>
+	</listeners>
+	<test name="RegressionReport" >
+		<packages>
+			<package name="testsuites.*" />
+		</packages>
+		<!--<classes>-->
+			<!--<class name="testsuites.HeaderFooter.FooterTest"/>-->
+		<!--</classes>-->
+	</test>
+
+</suite>
